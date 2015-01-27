@@ -1,7 +1,7 @@
 describe('Restate', function () {
 	var base;
 	beforeEach(function () {
-		module('codinghitchhiker.Restate');
+		module('codinghitchhiker.restate');
 		base = 'http://localhost'; // Set initial base url
 	});
 

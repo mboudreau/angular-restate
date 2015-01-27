@@ -25,7 +25,7 @@ angular.module('codinghitchhiker.restate', [])
                 throw "Config must be an object with key-value pairs"
             }
             // TODO: defaults validation?
-            defaults = obj;
+            angular.extend(defaults, obj);
             return instance;
         };
 

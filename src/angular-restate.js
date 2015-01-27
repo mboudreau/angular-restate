@@ -162,10 +162,8 @@ angular.module('codinghitchhiker.restate', [])
             });
 
             // TODO: add logic to remove slashes or build a url properly
-            return [].slice.apply(arguments).join('/')
+            return url.join('/');
         };
-
-
 
         var handleError = function (response) {
             // Default error message if not handled properly

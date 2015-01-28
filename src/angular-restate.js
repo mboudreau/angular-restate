@@ -9,7 +9,7 @@ angular.module('codinghitchhiker.restate', [])
         var http, query, logger;
 
         var baseUrl = '';
-        var defaults = {extend:true};  // TODO: add json diff instead of serializing whole object
+        var defaults = {extend:false};  // TODO: add json diff instead of serializing whole object
         var models = {};
 
         this.setBaseUrl = function (url) {

@@ -100,16 +100,18 @@ angular.module('codinghitchhiker.restate', [])
                 that['$' + method] = function (params, data, config) {
                     return http(angular.extend(defaults, config, {method: method, url: buildUrl(that), params: params, data: toJson(data)})).then(
                         function (response) {
-                            if(response.config.extend && that.$$original != null) {
-                                if(angular.isArray(response.data) && angular.isArray(that)) {
-                                    that.push.apply(that, response.data);
+                            if(response.data) {
+                                if(response.config.extend && that.$$original != null) {
+                                    if(angular.isArray(response.data) && angular.isArray(that)) {
+                                        that.push.apply(that, response.data);
+                                    }else{
+                                        angular.extend(that, response.data);
+                                    }
+                                    runSchema(that, that.$$schema);
+                                    return that;
                                 }else{
-                                    angular.extend(that, response.data);
+                                    return instance.create(that.$$label, that.$$url, response.data, that.$$schema);
                                 }
-                                runSchema(that, that.$$schema);
-                                return that;
-                            }else{
-                                return instance.create(that.$$label, that.$$url, response.data, that.$$schema);
                             }
                         },
                         handleError);

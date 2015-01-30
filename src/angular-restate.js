@@ -154,12 +154,16 @@ angular.module('codinghitchhiker.restate', [])
         };
 
         var buildUrl = function (obj) {
-            var url = [baseUrl], model;
-            angular.forEach(obj.$$label.split('.'), function(label){
+            var url = [], model, label, path = obj.$$label.split('.');
+            for(var i = path.length; i > 0; i--) {
+                label = path.join('.');
                 if(model = models[label]){
-                    url.push(model.$$url);
+                    url.unshift(model.$$url);
                 }
-            });
+                path.pop();
+            }
+
+            url.unshift(baseUrl);
 
             // TODO: add logic to remove slashes or build a url properly
             return url.join('/');

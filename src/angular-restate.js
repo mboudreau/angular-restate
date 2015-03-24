@@ -52,15 +52,18 @@ angular.module('codinghitchhiker.restate', [])
 		};
 
 		this.create = function (label, url, obj, schema) {
-			if (!label || !angular.isString(label)) {
+			if (!angular.isString(label)) {
 				throw 'Label must be a specified string';
 			}
-			if (obj != null && !angular.isObject(obj)) {
+			if (angular.isDefined(obj) && !angular.isObject(obj)) {
 				throw 'Object to be wrapped needs to be an Array or an Object';
 			}
+			if(angular.isDefined(url) && !(angular.isString(url) || angular.isNumber(url))) {
+				throw 'URL needs to be a Number or a String';
+			}
 			var model = models[label] || {};
-			url = url || model.$$url || ''; // Can blank to specify base url
-			obj = obj || model.$$obj || null; // Can blank to specify base url
+			url = url || model.$$url || ''; // Can be blank to specify base url
+			obj = obj || model.$$obj || null;
 
 			var empty = false;
 			if (obj == null) {
@@ -89,25 +92,6 @@ angular.module('codinghitchhiker.restate', [])
 				console.warn("Model with label '" + label + "' doesn't exist");
 				return null;
 			}
-		};
-
-		this.get = function (label) {
-			var model = models[label];
-			if (!label || !angular.isString(label)) {
-				throw 'Label must be a specified string';
-			}
-
-			if (!model) {
-				throw 'This Model was never specified before';
-			}
-
-			var obj = model.$$obj || {};
-
-			addWrap.apply(obj, [label, model.$$url, model.$$schema]);
-
-			// TODO: add listener to object here
-
-			return obj;
 		};
 
 		var instance = {
@@ -139,15 +123,17 @@ angular.module('codinghitchhiker.restate', [])
 			this.$$url = url;
 			this.$$errors = [];
 			this.$$saving = false;
-			this.$$schema = null;
+//			this.$$schema = null;
 			this.$dirty = false;
 
 			this.$schema = function (schema) {
 				// TODO: validate schema
 				this.$$schema = schema;
 				runSchema(that, that.$$schema);
-				return this;
+				return that;
 			};
+
+//			this.$schema(schema);
 
 			this.$$destroy = function () {
 				// TODO: add cleanup here in case of watchers
@@ -234,9 +220,9 @@ angular.module('codinghitchhiker.restate', [])
 		}
 
 		var runSchema = function (obj, schema) {
-			if (schema != null && !angular.isFunction(schema)) {
+			/*if (!angular.isObject(schema)) {
 				throw 'Schema is faulty, needs to be a function'
-			}
+			}*/
 			// TODO: create new instances from children in schema
 			if (obj && schema) {
 

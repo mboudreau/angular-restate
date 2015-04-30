@@ -210,7 +210,7 @@ angular.module('codinghitchhiker.restate', [])
 								}
 							}
 						},
-						handleError).finally(reset);
+						handleError)['finally'](reset);
 				};
 			});
 
